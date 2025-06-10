@@ -1,0 +1,29 @@
+<div class="chat-container">
+  <div class="messages-area">
+    <div *ngFor="let msg of messages" class="message" [ngClass]="{'user-message': msg.sender === 'user', 'bot-message': msg.sender === 'bot'}">
+      <po-widget [p-title]="msg.sender === 'user' ? 'You' : 'Gemini'">
+        <p [innerHTML]="msg.text"></p>
+      </po-widget>
+    </div>
+    <div *ngIf="isLoading" class="loading-indicator">
+      <po-loading-overlay p-text="Waiting for Gemini..."></po-loading-overlay>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <po-input
+      name="chatInput"
+      [(ngModel)]="currentMessage"
+      p-placeholder="Type your question..."
+      (keyup.enter)="sendMessage()"
+      class="chat-input"
+      [p-clean]="true"
+    ></po-input>
+    <po-button
+      p-label="Send"
+      (p-click)="sendMessage()"
+      [p-disabled]="!currentMessage || isLoading"
+      class="send-button"
+    ></po-button>
+  </div>
+</div>
